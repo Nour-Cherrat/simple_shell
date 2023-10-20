@@ -1,19 +1,20 @@
 #include "shell.h"
 
 /**
- * _myexit - Function for shell exit
- * @info: Structure containing potential arguments
- * Return: Exits with exit status 0 on success, 1 on failure, or -2 on exit call
- */
+ * _myexit - function to exit the shell
+ * @info: The structure that contains potential arguments
+ * Return: exits with an exit status of 0
+ * or 1 on failure or -2 on exit call
+*/
 
 int _myexit(info_t *info)
 {
-	int exit_code;
+	int checker;
 
-	if (info->argv[1])
+	if (info->argv[1]) /* if there is an argument */
 	{
-		exit_code = _erratoi(info->argv[1]);
-		if (exit_code == -1)
+		checker = _erratoi(info->argv[1]);
+		if (checker == -1)
 		{
 			info->status = 2;
 			print_error(info, "Illegal number: ");
@@ -28,73 +29,69 @@ int _myexit(info_t *info)
 	return (-2);
 }
 
-
 /**
- * _mycd - Function to change the current directory of the process
- * @info: Structure holding potential arguments
+ * _mycd - function to change the current directory of the process
+ * @info: Structure containing potential arguments
  * Return: 0 on success
- */
+*/
 
 int _mycd(info_t *info)
 {
-    char *current_dir, *new_dir, buffer[1024];
-    int change_dir_ret;
+	char *str, *direct, buff[1024];
+	int chdirect_ret;
 
-    current_dir = getcwd(buffer, 1024);
-    if (!current_dir)
-        _puts("TODO: >>getcwd failure emsg here<<\n");
-    if (!info->argv[1])
-    {
-        new_dir = _getenv(info, "HOME=");
-        if (!new_dir)
-            change_dir_ret = chdir((new_dir = _getenv(info, "PWD=")) ? new_dir : "/");
-        else
-            change_dir_ret = chdir(new_dir);
-    }
-    else if (_strcmp(info->argv[1], "-") == 0)
-    {
-        if (!_getenv(info, "OLDPWD="))
-        {
-            _puts(current_dir);
-            _putchar('\n');
-            return (1);
-        }
-        _puts(_getenv(info, "OLDPWD="));
-        _putchar('\n');
-        change_dir_ret = chdir((new_dir = _getenv(info, "OLDPWD=")) ? new_dir : "/");
-    }
-    else
-        change_dir_ret = chdir(info->argv[1]);
-    if (change_dir_ret == -1)
-    {
-        print_error(info, "can't cd to ");
-        _eputs(info->argv[1]);
-        _eputchar('\n');
-    }
-    else
-    {
-        _setenv(info, "OLDPWD", _getenv(info, "PWD="));
-        _setenv(info, "PWD", getcwd(buffer, 1024));
-    }
-    return (0);
+	str = getcwd(buff, 1024);
+	if (!str)
+		_puts("TODO: >>getcwd failure emsg here<<\n");
+	if (!info->argv[1])
+	{
+		direct = _getenv(info, "HOME=");
+		if (!direct)
+			chdirect_ret =
+				chdir((direct = _getenv(info, "PWD=")) ? direct : "/");
+		else
+			chdirect_ret = chdir(direct);
+	}
+	else if (_strcmp(info->argv[1], "-") == 0)
+	{
+		if (!_getenv(info, "OLDPWD="))
+		{
+			_puts(str);
+			_putchar('\n');
+			return (1);
+		}
+		_puts(_getenv(info, "OLDPWD=")), _putchar('\n');
+		chdirect_ret =
+			chdir((direct = _getenv(info, "OLDPWD=")) ? direct : "/");
+	}
+	else
+		chdirect_ret = chdir(info->argv[1]);
+	if (chdirect_ret == -1)
+	{
+		print_error(info, "can't cd to ");
+		_eputs(info->argv[1]), _eputchar('\n');
+	}
+	else
+	{
+		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		_setenv(info, "PWD", getcwd(buff, 1024));
+	}
+	return (0);
 }
 
-
 /**
- * _myhelp - Function to provide assistance and information
- * @info: Structure holding potential arguments
+ * _myhelp - function that changes the current directory of the process
+ * @info: Structure containing potential arguments
  * Return: 0 on success
- */
-
+*/
 
 int _myhelp(info_t *info)
 {
-    char **arguments;
+	char **args_array;
 
-    arguments = info->argv;
-    _puts("help call works. Function not yet implemented\n");
-    if (0)
-        _puts(*arguments);
-    return (0);
+	args_array = info->argv;
+	_puts("help call works. Function not yet implemented \n");
+	if (0)
+		_puts(*args_array); /* to get rid of unused variable warning */
+	return (0);
 }
-

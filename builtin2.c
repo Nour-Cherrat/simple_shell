@@ -1,26 +1,23 @@
 #include "shell.h"
 
 /**
- * _myhistory - Function to display the command history entered by the user
- * @info: Structure holding potential arguments
- * Return: 0 on success
- */
-
+ * _myhistory - function to print the history of commands entered by user
+ * @info: Struct for potential arguments
+ *  Return: 0 on success
+*/
 
 int _myhistory(info_t *info)
 {
-    print_list(info->command_history);
-    return (0);
+	print_list(info->history);
+	return (0);
 }
 
-
 /**
- * unset_alias - Function to remove an alias by its string name
- * @info: Structure containing potential arguments
- * @str: The alias string to unset
+ * unset_alias - unsets alias to string
+ * @info: Struct for potential arguments
+ * @str: the string
  * Return: 0 on success, 1 on error
- */
-
+*/
 
 int unset_alias(info_t *info, char *str)
 {
@@ -39,12 +36,11 @@ int unset_alias(info_t *info, char *str)
 }
 
 /**
- * set_alias - Function to set an alias to a string
- * @info: Structure holding potential arguments
- * @alias_str: The alias to set
+ * set_alias -function to set alias to string
+ * @info: Struct for potential arguments
+ * @str: the alias
  * Return: 0 on success, 1 on error
- */
-
+*/
 
 int set_alias(info_t *info, char *str)
 {
@@ -61,11 +57,10 @@ int set_alias(info_t *info, char *str)
 }
 
 /**
- * print_alias - Function to display an alias
- * @node: The alias node to print
+ * print_alias - function to print alias
+ * @node: the alias node
  * Return: 0 on success, 1 on failure
- */
-
+*/
 
 int print_alias(list_t *node)
 {
@@ -85,37 +80,35 @@ int print_alias(list_t *node)
 }
 
 /**
- * _myalias - Function to manage aliases
- * @info: Structure holding potential arguments
- * Return: 0 on success
- */
-
+ * _myalias - function to mimic alias
+ * @info: Struct for potential arguments
+ *  Return: 0 on success
+*/
 
 int _myalias(info_t *info)
 {
-	int index = 0;
-	char *equal_sign_ptr = NULL;
-	list_t *current_node = NULL;
+	int x = 0;
+	char *ptr = NULL;
+	list_t *node = NULL;
 
 	if (info->argc == 1)
 	{
-		current_node = info->alias;
-		while (current_node)
+		node = info->alias;
+		while (node)
 		{
-			print_alias(current_node);
-			current_node = current_node->next;
+			print_alias(node);
+			node = node->next;
 		}
 		return (0);
 	}
-	for (index = 1; info->argv[index]; index++)
+	for (x = 1; info->argv[x]; x++)
 	{
-		equal_sign_ptr = _strchr(info->argv[index], '=');
-		if (equal_sign_ptr)
-			set_alias(info, info->argv[index]);
+		ptr = _strchr(info->argv[x], '=');
+		if (ptr)
+			set_alias(info, info->argv[x]);
 		else
-			print_alias(node_starts_with(info->alias, info->argv[index], '='));
+			print_alias(node_starts_with(info->alias, info->argv[x], '='));
 	}
 
 	return (0);
 }
-
